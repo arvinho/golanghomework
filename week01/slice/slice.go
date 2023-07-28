@@ -2,7 +2,7 @@ package main
 
 import "errors"
 
-//删除指定下标元素，支持泛型
+// 删除指定下标元素，支持泛型
 func DeleteSliceByIndex[T any](slice []T, idx int) ([]T, error) {
 	if len(slice) <= 0 {
 		return nil, errors.New("切片长度出错")
@@ -19,7 +19,7 @@ func DeleteSliceByIndex[T any](slice []T, idx int) ([]T, error) {
 	return slice[:temp], nil
 }
 
-//删除指定下标元素，支持泛型并缩容
+// 删除指定下标元素，支持泛型并缩容
 func DeleteSlice[T any](slice []T, idx int) ([]T, error) {
 	if len(slice) <= 0 {
 		return nil, errors.New("切片长度出错")
@@ -32,7 +32,11 @@ func DeleteSlice[T any](slice []T, idx int) ([]T, error) {
 			temp = append(temp, val)
 		}
 	}
+	//新切片copy缩容
 	temp1 := make([]T, len(slice)-1, cap(slice)-1)
 	copy(temp1, temp)
+	//将原切片值设置为nil，方便GC回收
+	temp = nil
+	slice = nil
 	return temp1, nil
 }
