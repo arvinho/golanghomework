@@ -26,6 +26,7 @@ func DeleteSlice[T any](slice []T, idx int) ([]T, error) {
 	} else if idx < 0 || idx >= len(slice) {
 		return nil, errors.New("下标出错")
 	}
+
 	temp := slice[:0]
 	for i, val := range slice {
 		if i != idx {
