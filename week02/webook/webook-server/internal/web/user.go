@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time"
 	"webook/webook-server/internal/domain"
 	"webook/webook-server/internal/service"
 )
@@ -148,15 +149,15 @@ func (uh *UserHandler) Edit(ctx *gin.Context) {
 		return
 	}
 
-	//_, err := time.Parse("1962-01-01", req.Birthday)
-	//if err != nil {
-	//	ctx.String(http.StatusOK, "生日日期格式不对")
-	//	return
-	//}
+	_, err := time.Parse("2006-01-02", req.Birthday)
+	if err != nil {
+		ctx.String(http.StatusOK, "生日日期格式不对")
+		return
+	}
 
 	sess := sessions.Default(ctx)
 	userId := sess.Get("userId").(int64)
-	err := uh.svc.Edit(ctx, domain.User{
+	err = uh.svc.Edit(ctx, domain.User{
 		Id:           userId,
 		Nickname:     req.Nickname,
 		Birthday:     req.Birthday,
